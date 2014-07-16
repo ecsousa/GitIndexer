@@ -2,6 +2,7 @@
 using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,17 +27,22 @@ namespace GitDownloader
     {
         static void Main(string[] args)
         {
-            if(args.Length != 3)
+            Trace.Listeners.Add(new ConsoleTraceListener(useErrorStream : true));
+
+            if(args.Length != 2)
             {
-                Console.Error.WriteLine("GitDownloader requires 3 parameters:");
+                Console.Error.WriteLine("GitDownloader requires 2 parameters:");
                 Console.Error.WriteLine(" 1. Repository URI");
                 Console.Error.WriteLine(" 2. File ID");
-                Console.Error.WriteLine(" 3. Output path");
+                Console.Error.WriteLine();
+                Console.Error.WriteLine("File will be written to stdout");
+
+                Environment.ExitCode = 1;
+                return;
             }
 
             var repositoryUri = args[0];
             var fileID = args[1];
-            var output = args[2];
 
             var repositoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GitDownloader", repositoryUri.SHA1());
 
@@ -96,9 +102,9 @@ namespace GitDownloader
                     return;
                 }
 
-                using(var file = File.Create(output))
                 using(var content = blob.GetContentStream())
-                    content.CopyTo(file);
+                using(var output = Console.OpenStandardOutput())
+                    content.CopyTo(output);
             }
 
         }
@@ -109,8 +115,6 @@ namespace GitDownloader
 
             var info = Store.GetCommand(new Uri(completeUri, "/")).ToDictionary(
                 t => t.Item1, t => t.Item2);
-
-            Store.WriteGitParameters(info);
 
             return new UsernamePasswordCredentials
             {
