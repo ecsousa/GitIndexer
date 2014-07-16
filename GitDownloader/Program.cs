@@ -110,13 +110,14 @@ namespace GitDownloader
             var info = Store.GetCommand(new Uri(completeUri, "/")).ToDictionary(
                 t => t.Item1, t => t.Item2);
 
+            Store.WriteGitParameters(info);
+
             return new UsernamePasswordCredentials
             {
                 Username = info["username"],
                 Password = info["password"]
             };
 
-            Store.WriteGitParameters(info);
         }
     }
 }
