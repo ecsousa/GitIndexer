@@ -102,7 +102,8 @@ namespace GitDownloader
                     return;
                 }
 
-                using(var content = blob.GetContentStream())
+
+                using(var content = blob.GetContentStream(new FilteringOptions(Path.Combine(repositoryPath, "output.txt"))))
                 using(var output = Console.OpenStandardOutput())
                     content.CopyTo(output);
             }
