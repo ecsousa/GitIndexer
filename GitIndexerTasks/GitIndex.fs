@@ -123,7 +123,7 @@ type GitIndex() =
                 yield "VERCTRL=GIT"
                 yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
                 yield "SRCSRV: variables ------------------------------------------"
-                yield "GIT_EXTRACT_CMD=%GITEXTRACTTOOLt %fnvar%(%var2%) %var4% > %srcsrvtrg% "
+                yield "GIT_EXTRACT_CMD=%GITEXTRACTTOOL% %fnvar%(%var2%) %var4% > %srcsrvtrg% "
                 yield "GIT_EXTRACT_TARGET=%targ%\%var2%\%fnbksl%(%var3%)\%var4%\%fnfile%(%var1%)"
                 yield "SRCSRVVERCTRL=git"
                 yield "SRCSRVERRDESC=access"

@@ -49,7 +49,8 @@ open System.Runtime.InteropServices;
 [<assembly: AssemblyVersion("1.0.0.0")>]
 [<assembly: AssemblyFileVersion("1.0.0.0")>]
 
-[<assembly:AssemblyKeyFileAttribute("..\\GitIndexer.snk")>]
+// LibGit2Sharp is not strong named. Hence this assembly cannot be either
+//[<assembly:AssemblyKeyFileAttribute("..\\GitIndexer.snk")>]
 
 ()
 

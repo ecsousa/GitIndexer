@@ -77,7 +77,13 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <LibGitNativeBinaries_x86 Include="$(SolutionDir)packages\LibGit2Sharp.0.18.1.0\lib\net40\NativeBinaries\x86\*" />
+      <LibGitNativeBinaries_amd64 Include="$(SolutionDir)packages\LibGit2Sharp.0.18.1.0\lib\net40\NativeBinaries\x86\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(LibGitNativeBinaries_x86)" DestinationFolder="$(TargetDir)NativeBinaries\x86" />
+    <Copy SourceFiles="@(LibGitNativeBinaries_amd64)" DestinationFolder="$(TargetDir)NativeBinaries\amd64" />
+  </Target>
 </Project>

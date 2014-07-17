@@ -3,4 +3,5 @@
 
 *.suo
 *.user
-packages/*/
+[Pp]ackages/*/
+[Pp]ackage/*.nupkg
