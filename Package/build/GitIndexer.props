@@ -13,17 +13,8 @@
 -->
 
     <PropertyGroup>
-        <BuildDependsOn>
-            $(BuildDependsOn);
-            GitIndexerAfterBuild
-        </BuildDependsOn>
+        <GitIndexer>true</GitIndexer>
     </PropertyGroup>
-
-    <UsingTask TaskName="GitIndexerTasks.GitIndex" AssemblyFile="$(MSBuildThisFileDirectory)..\tools\GitIndexerTasks.dll"/>
-
-    <Target Name="GitIndexerAfterBuild">
-        <GitIndex Condition=" Exists('$(TargetDir)$(TargetName).pdb') " PdbFiles="$(TargetDir)$(TargetName).pdb"/>
-    </Target>
 
 </Project>
 
