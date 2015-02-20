@@ -123,7 +123,7 @@ type GitIndex() =
                 yield "VERCTRL=GIT"
                 yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
                 yield "SRCSRV: variables ------------------------------------------"
-                yield "GIT_EXTRACT_CMD=cmd /c %GITEXTRACTTOOL% %fnvar%(%var2%) %var4% > %srcsrvtrg%"
+                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"Invoke-WebRequest '%fnvar%(%var2%)%var4%/%var3%' -OutFile %srcsrvtrg% \" "
                 yield "GIT_EXTRACT_TARGET=%targ%\%var2%\%fnbksl%(%var3%)\%var4%\%fnfile%(%var1%)"
                 yield "SRCSRVVERCTRL=git"
                 yield "SRCSRVERRDESC=access"
@@ -160,10 +160,22 @@ type GitIndex() =
                         files
                         |> Seq.map (fun file -> file, relativePath file)
 
+                    let diff =
+                        let diff = 
+                            seq {
+                                for diff in repo.Diff.Compare<TreeChanges>(Seq.map snd filesRelatives, true) do
+                                    yield diff.Path.ToLower().Replace('\\', '/'), diff
+                            }
+                        Map(diff)
+
+                    let commit = (Seq.head repo.Commits).Id.ToString()
+
                     for path, relative in filesRelatives do
-                        let blob = repo.ObjectDatabase.CreateBlob(path)
-                        indexed := true
-                        yield sprintf "%s*%s*%s*%s" path serverName relative (blob.Id.ToString())
+                        if diff.ContainsKey(relative.ToLower()) then
+                            this.Log.LogWarning("File {0} is not in this reposoitory.", path)
+                        else
+                            indexed := true
+                            yield sprintf "%s*%s*%s*%s" path serverName relative commit
 
 
                 yield "SRCSRV: end ------------------------------------------------"
