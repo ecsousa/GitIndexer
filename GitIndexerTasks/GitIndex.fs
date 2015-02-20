@@ -147,7 +147,7 @@ type GitIndex() =
                 yield "VERCTRL=GIT"
                 yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
                 yield "SRCSRV: variables ------------------------------------------"
-                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"(new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', %srcsrvtrg%) \" "
+                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { (new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', $args[0]) } %srcsrvtrg% \" "
                 yield "GIT_EXTRACT_TARGET=%targ%\%var2%\%fnbksl%(%var3%)\%var4%\%fnfile%(%var1%)"
                 yield "SRCSRVVERCTRL=git"
                 yield "SRCSRVERRDESC=access"
