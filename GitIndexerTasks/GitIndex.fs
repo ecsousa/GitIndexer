@@ -77,6 +77,10 @@ type GitIndex() =
 
     member val DbgToolsPath = Unchecked.defaultof<string> with get, set
 
+    member val UseUrlSuffix = true with get, set
+
+    member val UrlSuffix = Unchecked.defaultof<string> with get, set
+
     member private this.PdbstrPath =
         if String.IsNullOrWhiteSpace(this.DbgToolsPath) then
             relativePath @"dbgtools\pdbstr.exe"
@@ -89,7 +93,27 @@ type GitIndex() =
         else
             Path.Combine(this.DbgToolsPath, "srctool.exe")
 
+    member private this.MakeUrlSuffix(baseUrl: string) =
+        let mutable url = (baseUrl.Trim())
 
+        if url.EndsWith(".git", StringComparison.InvariantCultureIgnoreCase) then
+            url <- url.Substring(0, url.Length - 4)
+        else if url.EndsWith(".git/", StringComparison.InvariantCultureIgnoreCase) then
+            url <- url.Substring(0, url.Length - 5)
+
+        if not (url.EndsWith("/")) then
+            url <- url + "/"
+
+        if this.UseUrlSuffix then
+            if String.IsNullOrWhiteSpace(this.UrlSuffix) then
+                url <- url + "raw"
+            else
+                url <- url + this.UrlSuffix
+
+            if not (url.EndsWith("/")) then
+                url <- url + "/"
+
+        url
 
     member private this.MakeSrcsrv pdb = 
 
@@ -110,7 +134,7 @@ type GitIndex() =
 
         let serverNameUrl (repo: Repository) =
             let url = repo.Network.Remotes.["origin"].Url
-            "_" + (Regex.Replace(url, "[^\w]", "_")).ToUpper(), url
+            "_" + (Regex.Replace(url, "[^\w]", "_")).ToUpper(), this.MakeUrlSuffix(url)
 
         let indexed = ref false
 
