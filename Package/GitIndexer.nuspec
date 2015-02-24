@@ -18,23 +18,19 @@
     <authors>Eduardo Sousa</authors>
     <owners>Eduardo Sousa</owners>
     <projectUrl>https://github.com/ecsousa/GitIndexer/</projectUrl>
-    <!--<licenseUrl>https://tfsindexer.codeplex.com/license</licenseUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Indexes source code from a .pdb files to a Git repository</description>
-    <summary>Include msbuild target in project that creates index in PDB file pointing source source to its git repository.</summary>
-    <!--<releaseNotes>Intended to work with Visual Studio 2012 or 2013. Debugging a assembly with indexed PDB, AND "Enable Source Server support" option enabled will give Visual Studio the ability to download missing source code from version control server.
+    <summary>Include msbuild target in project that creates index in PDB file pointing source source to its Git repository.</summary>
+    <releaseNotes>Intended to work with Visual Studio 2010 or higher. Debugging a assembly with indexed PDB, AND "Enable Source Server support" option enabled will give Visual Studio the ability to download missing source code from version control server.
 
-For information on debugging with indexed symbols, see documentation on project site.
+This version should be able to work while with repositories which origin remote is a GitHub (github.com or on-premise instalation) public repository.
 
-It will require connection to TFS Server during build (and will generate error otherwise).
+Source code must be at least staged for GitIndexer to index it.
 
-Checked out files will NOT be indexed!
-
-This version has moved TfsIndexer targets file to NuGet build folder, so it will take care of adding target file to project. As result, it will not be replicated on all projects, add will not be added as content file.
       
-Using this approach has a downside: when you open Visual Studio without TfsIndexer package on packages folders, and build it without prior restoring packges, NuGet will try to restore packages. But in this case, even when packages are successfully restored, TfsIndexer targets will not be included during building. For C# projects, it will be included on next build attempt. For VB.NET and F#, it will require you to restart Visual Studio.
+Note: when you open Visual Studio without GitIndexer package on packages folders, and build it without prior restoring packges, NuGet will try to restore packages. But in this case, even when packages are successfully restored, GitIndexer targets will not be included during building. For C# projects, it will be included on next build attempt. For VB.NET and F#, it will require you to restart Visual Studio.
 
-Because of that, TfsIndexer will include on your project file a test on BeforeBuild target that will check whether TfsIndexer targets hava been included on build, and will throw en error otherwise, describing what you will have to do to get it working based on your project type.</releaseNotes>-->
+Because of that, GitIndexer will include on your project file a test on BeforeBuild target that will check whether GitIndexer targets hava been included on build, and will throw en error otherwise, describing what you will have to do to get it working based on your project type.</releaseNotes>
     <copyright>Eduardo Sousa</copyright>
     <language>en-us</language>
     <tags>pdb git index</tags>
