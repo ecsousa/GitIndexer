@@ -148,8 +148,8 @@ type GitIndex() =
                 yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
                 yield "SRCSRV: variables ------------------------------------------"
                 //yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { (new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', $args[0]) } %srcsrvtrg% \" "
-                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { [System.IO.File]::WriteAllText($args[0], (new-object System.Net.WebClient).DownloadString('%fnvar%(%var2%)%var4%/%var3%').Replace([string][char]10, ([string][char]13) + ([string][char]10)).Replace(([string][char]13) + ([string][char]13) + ([string][char]10), ([string][char]13) + ([string][char]10)), [System.Text.Encoding]::GetEncoding(%var5%) ) } %srcsrvtrg% \" "
-                yield "GIT_EXTRACT_TARGET=%targ%\%var4%\%fnbksl%(%var3%)"
+                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { [System.IO.File]::WriteAllText($args[0], ([regex] '(?<!\\x0d)\\x0a').Replace((new-object System.Net.WebClient).DownloadString('%fnvar%(%var2%)%var4%/%var3%'), ([string][char]13) + ([string][char]10)), [System.Text.Encoding]::GetEncoding(%var5%) ) } %srcsrvtrg% \" "
+                yield "GIT_EXTRACT_TARGET=%targ%\%var6%\%fnbksl%(%var3%)"
                 yield "SRCSRVVERCTRL=git"
                 yield "SRCSRVERRDESC=access"
                 yield "SRCSRVERRVAR=var2"
@@ -205,7 +205,7 @@ type GitIndex() =
                             this.Log.LogWarning("File {0} is not in this repository.", path)
                         else
                             indexed := true
-                            yield sprintf "%s*%s*%s*%s*%d" path serverName relative commit codePage
+                            yield sprintf "%s*%s*%s*%s*%d*%s" path serverName relative commit codePage (commit.Substring(0, 7))
 
 
                 yield "SRCSRV: end ------------------------------------------------"
