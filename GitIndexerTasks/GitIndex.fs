@@ -147,7 +147,8 @@ type GitIndex() =
                 yield "VERCTRL=GIT"
                 yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
                 yield "SRCSRV: variables ------------------------------------------"
-                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { (new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', $args[0]) } %srcsrvtrg% \" "
+                //yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { (new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', $args[0]) } %srcsrvtrg% \" "
+                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { [System.IO.File]::WriteAllText($args[0], (new-object System.Net.WebClient).DownloadString('%fnvar%(%var2%)%var4%/%var3%').Replace([string][char]10, ([string][char]13) + ([string][char]10)).Replace(([string][char]13) + ([string][char]13) + ([string][char]10), ([string][char]13) + ([string][char]10)), [System.Text.Encoding]::GetEncoding(%var5%) ) } %srcsrvtrg% \" "
                 yield "GIT_EXTRACT_TARGET=%targ%\%var2%\%fnbksl%(%var3%)\%var4%\%fnfile%(%var1%)"
                 yield "SRCSRVVERCTRL=git"
                 yield "SRCSRVERRDESC=access"
@@ -195,11 +196,16 @@ type GitIndex() =
                     let commit = (Seq.head repo.Commits).Id.ToString()
 
                     for path, relative in filesRelatives do
+                        let codePage = (
+                            use stream = new System.IO.StreamReader(path, true)
+                            stream.CurrentEncoding.CodePage
+                        )
+
                         if diff.ContainsKey(relative.ToLower()) then
-                            this.Log.LogWarning("File {0} is not in this reposoitory.", path)
+                            this.Log.LogWarning("File {0} is not in this repository.", path)
                         else
                             indexed := true
-                            yield sprintf "%s*%s*%s*%s" path serverName relative commit
+                            yield sprintf "%s*%s*%s*%s*%d" path serverName relative commit codePage
 
 
                 yield "SRCSRV: end ------------------------------------------------"
