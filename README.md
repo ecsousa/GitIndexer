@@ -1,5 +1,7 @@
 # GitIndexer
 
+Build on master ![build status](https://ci.appveyor.com/api/projects/status/github/ecsousa/GitIndexer?branch=master&svg=true)
+
 ## Objetives
 
 This package aims to provide a easy way to have .pdb files with source indexed
