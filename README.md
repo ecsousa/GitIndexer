@@ -29,7 +29,7 @@ This is a beta release, with the following limitations:
 
 * origin remote must be a GitHub repository (github.com or on-premise
   installation), using HTTP protocol.
-* This GitHub repoitory must be public
+* This GitHub repository must be public
 
 Git protocol (and command line) tools does not provide a way for downloading a
 single file. GitHub, in the other hand, provides it. This package will download
