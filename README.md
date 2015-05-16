@@ -16,12 +16,12 @@ on every build.
 
 ## Configuring Visual Studio
 
-For Visual Studio to able to use indexed symbol files, you must do the folowing
+For Visual Studio to able to use indexed symbol files, you must do the following
 configuration:
 
 * Tools menu
 * Options
-* Debuggin
+* Debugging
 * Check "Enable source server support" option
 
 
@@ -40,14 +40,14 @@ source using a URL like this:
     https://github.com/ecsousa/GitIndexer/raw/2fef0639a179357db1ea86f731293c930b45f086/GitIndexerTasks/GitIndex.fs
 
 The extract command GitIndexer is using inside .pdb files, will expand to
-somethig like this:
+something like this:
 
     C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command "& { (new-object System.Net.WebClient).DownloadFile('https://github.com/ecsousa/GitIndexer/raw/2fef0639a179357db1ea86f731293c930b45f086/GitIndexerTasks/GitIndex.fs', $args[0]) } "C:\Users\user\AppData\Local\Temp\SymbolCache\_HTTPS___GITHUB_COM_ECSOUSA_GITINDEXER\GitIndexerTasks\GitIndex.fs\2fef0639a179357db1ea86f731293c930b45f086\GitIndex.fs" "
 
 As it does not uses git command line tool, it won't be able to get credentials
 from git, and hence will only work with public repositories.
 
-Suggestions on how to work arround these issues are welcome!
+Suggestions on how to work around these issues are welcome!
 
 ## Building
 
