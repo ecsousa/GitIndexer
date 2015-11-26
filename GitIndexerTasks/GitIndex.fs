@@ -118,7 +118,7 @@ type GitIndex() =
     member private this.MakeSrcsrv pdb = 
 
         let readPdb pdb =
-            let arguments = sprintf "-r %s" pdb
+            let arguments = sprintf "-r \"%s\"" pdb
             executeRead this.ScrtoolPath arguments
 
         let infoFiles =
