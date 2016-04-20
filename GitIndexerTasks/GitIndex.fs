@@ -142,17 +142,28 @@ type GitIndex() =
             seq {
 
                 yield "SRCSRV: ini ------------------------------------------------"
-                yield "VERSION=3"
+                yield "VERSION=1"
                 yield "INDEXVERSION=2"
-                yield "VERCTRL=GIT"
+                yield "VERCTL=Archive"
                 yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
                 yield "SRCSRV: variables ------------------------------------------"
-                //yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { (new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', $args[0]) } %srcsrvtrg% \" "
-                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { [System.IO.File]::WriteAllText($args[0], ([regex] '(?<!\\x0d)\\x0a').Replace((new-object System.Net.WebClient).DownloadString('%fnvar%(%var2%)%var4%/%var3%'), ([string][char]13) + ([string][char]10)), [System.Text.Encoding]::GetEncoding(%var5%) ) } %srcsrvtrg% \" "
-                yield "GIT_EXTRACT_TARGET=%targ%\%var6%\%fnbksl%(%var3%)"
-                yield "SRCSRVVERCTRL=git"
-                yield "SRCSRVERRDESC=access"
-                yield "SRCSRVERRVAR=var2"
+                yield "SRCSRVVERCTRL=http"
+                yield "HTTP_EXTRACT_TARGET=%fnvar%(%var2%)%var4%/%var3%"
+                yield "SRCSRVTRG=%http_extract_target%"
+                yield "SRCSRVCMD="
+
+//                yield "SRCSRV: ini ------------------------------------------------"
+//                yield "VERSION=3"
+//                yield "INDEXVERSION=2"
+//                yield "VERCTRL=GIT"
+//                yield (sprintf "DATETIME=%s" (DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")))
+//                yield "SRCSRV: variables ------------------------------------------"
+//                //yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { (new-object System.Net.WebClient).DownloadFile('%fnvar%(%var2%)%var4%/%var3%', $args[0]) } %srcsrvtrg% \" "
+//                yield "GIT_EXTRACT_CMD=%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"& { [System.IO.File]::WriteAllText($args[0], ([regex] '(?<!\\x0d)\\x0a').Replace((new-object System.Net.WebClient).DownloadString('%fnvar%(%var2%)%var4%/%var3%'), ([string][char]13) + ([string][char]10)), [System.Text.Encoding]::GetEncoding(%var5%) ) } %srcsrvtrg% \" "
+//                yield "GIT_EXTRACT_TARGET=%targ%\%var6%\%fnbksl%(%var3%)"
+//                yield "SRCSRVVERCTRL=git"
+//                yield "SRCSRVERRDESC=access"
+//                yield "SRCSRVERRVAR=var2"
 
                 let infoFilesInTfs =
                     infoFiles
@@ -168,8 +179,6 @@ type GitIndex() =
                             let name, url = serverNameUrl repo
                             yield sprintf "%s=%s" name url
 
-                yield "SRCSRVTRG=%GIT_extract_target%"
-                yield "SRCSRVCMD=%GIT_extract_cmd%"
                 yield "SRCSRV: source files ---------------------------------------"
 
                 for repo, files in infoFilesInTfs do
