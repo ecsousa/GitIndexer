@@ -38,7 +38,8 @@ Because of that, GitIndexer will include on your project file a test on BeforeBu
   <files>
     <file src='build\**' target='build' /> 
     <file src='tools\**' target='tools' /> 
-    <file src='..\packages\LibGit2Sharp.0.21.0.176\lib\net40\**' target='tools' /> 
+    <file src='..\packages\LibGit2Sharp.0.22.0\lib\net40\**' target='tools' /> 
+    <file src='..\packages\LibGit2Sharp.NativeBinaries.1.0.129\libgit2\windows\**' target='tools\NativeBinaries' /> 
     $TaskFiles$
   </files>
 </package>
